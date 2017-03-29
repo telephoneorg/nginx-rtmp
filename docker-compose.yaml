@@ -1,0 +1,13 @@
+version: '2.1'
+services:
+  nginx-rtmp:
+    container_name: nginx-rtmp
+    build: .
+    image: "callforamerica/nginx-rtmp:latest"
+    volumes:
+    - ${PWD}/conf/nginx.conf:/etc/nginx/nginx.conf
+    - ${PWD}/conf/conf.d:/etc/nginx/conf.d
+    ports:
+    - "1935:1935"
+    cap_add:
+    - NET_BIND_SERVICE

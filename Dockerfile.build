@@ -1,0 +1,26 @@
+FROM callforamerica/debian
+
+RUN apt-get update && \
+        apt-get install -y \
+            build-essential \
+            ca-certificates \
+            curl \
+            git \
+            libpcre3 \
+            libpcre3-dev \
+            libssl-dev \
+            openssl \
+            zlibc && \
+        apt-get clean
+
+RUN curl -sL -O https://nginx.org/download/nginx-1.11.10.tar.gz && \
+    tar xzvf nginx-1.11.10.tar.gz && \
+    cd nginx-* && \
+    git clone https://github.com/arut/nginx-rtmp-module && \
+    ./configure --with-compat --add-dynamic-module=./nginx-rtmp-module --with-http_ssl_module && \
+    make && \
+    make install
+
+
+ENTRYPOINT cp /usr/local/nginx/modules/ngx_rtmp_module.so /host/
+CMD [""]

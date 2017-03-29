@@ -1,0 +1,26 @@
+[Unit]
+Description=Nginx RTMP Server
+After=network.target docker.service
+
+[Service]
+WorkingDirectory=/opt/nginx-rtmp
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull callforamerica/rtmp-server
+ExecStart=/usr/local/bin/systemd-docker --cgroups name=systemd run \
+    --rm --name %n \
+    -v /opt/nginx-rtmp/conf/nginx.conf:/etc/nginx/nginx.conf \
+    -v /opt/nginx-rtmp/conf.d:/etc/nginx/conf.d \
+    -p "1935:1935" \
+    --cap-add NET_BIND_SERVICE \
+    callforamerica/rtmp-server
+
+Restart=always
+RestartSec=5s
+Type=notify
+NotifyAccess=all
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
