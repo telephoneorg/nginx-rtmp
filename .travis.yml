@@ -1,0 +1,24 @@
+services: docker
+env:
+  global:
+  - DOCKER_USER=callforamerica
+  # DOCKER_PASS
+  - secure: "mpeOXPrVc80GKeOVCoqe7ZjF1WmxZtrhHHDbca2BKfKQg/q9EMGreBn0Fi7UMXt3snmLC0td2+BBkUy20Eyctw7Z7C2gQB4yW7UxCxUycdQQPZXyMOnSIEja3pcrR1r4caehs+12j7JFg4Ah554GFvlTF8XjKEo1KPcPnkfkdqEhPyQOhi+tlN/sxnP0LfGYfxjHjCVThuF1aNsgS+al6cBUuNesfRyXSfOIKZX+R5spjVgEUiKSfamiMjCDzlLxfRc9pBObcRzzvsj2crS7BK+TSF2xAhkRimS5jBQLG/DMdQ/S8Qs7XQw6FXpgBQV5MogfrxhcboCQ9POlGMg3PrBHZG+/LLuRYwEFtL9C7+t0yewO79ksoBXwCfvB7fZfplVu2vKojQcLWRLFxM+tHNYM/ymmbnBK4RLfqtL/2o3aVJIF7KBzBC8BUM4Qz4HIYWq88+bQ2xpdvBTGULmJMZ4TF6Qta6KLDMBSB8SvQQu18VqBcwiRmJoBOnLnsXUQHaRcjHUwhhb9spQrCAtxSzZf29cpURZPBFWZ3w+x94LpRVFPxWQUbimdOrLqAaFyupTP7PaiRCDnF32O6TBtGMoH7DLql8Oo+xjkj03NINMlF0ANv5gO49rersE7xgOYJrG7qxx1k20gfc+SuxA4dr1EOc3EDGr//AufuMc86Jo="
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+  slack:
+    rooms:
+    - secure: "CQPy2y5pAgaTJogyQp4laZXC36onYWleu0mYrW5fw0kg3igNLpg/9kIrx8OHwYObspFUEI7i/4PNEV0fhLJvdkInmj08ACuJxXcVUEMLK5mpMyd3IeiecOMGs4lie8j//d9rqO9kMJz5bR90CZZj0J9a5yMEdgYO66+6WLJ+MDqIw7tWZxcnov/hDx6Zt6UFuM7mrHavcA4sJX2TdG4QXVIy3YsfiRlsbHGBGF+2iLzNaev4EfIipufCoE8QHhYhE0e+9XBKeeEHwKx2LrXWBGkm1gjqScMzwFZOq46AzWtFMPIZIHXQLszWth30Cz+B8IqWQJcqhaYqrOGpPo4+tN4UwCInVCVMfHKHV5ofzneRVv5qotuViWoOd3pjGmtZZK4TUteWHyhGYKGZwoicMkMoIQvbSbJ9MS5S0t1xpoScM3sHITdABLHTPNE36E2PCfJ33jYRtzZ5Te397ZS09CB1wn3nV/tEy/unyAjqae2KPqTv6kKpMovlavmEwCCaLlF5fdb6Swp6vroD7SYRi57R/He2Q1hxSBKKbaVywsa3CDd5VvkgEOROJKgpmrPXiT5j/orzJOTZIPpCCQZY8s4VgfW6PHI4YZ1RdoVzkhponD/z3Dcyh0xFy6JbmrfgIR8/ficv5JgPz2Slr+Eerpn2F4mEuChN8keaKzAYQ64="
+    on_success: always
+    on_failure: always
+
+before_install: make build-builder
+install: make build
+
+script: true
+
+after_success:
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- docker push $DOCKER_USER/nginx-rtmp
