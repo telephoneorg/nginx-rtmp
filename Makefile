@@ -10,3 +10,6 @@ build:
 
 clean:
 	rm -rf bins/*.so
+
+install-systemd-unit:
+	cp nginx-rtmp.service /etc/systemd/system/
