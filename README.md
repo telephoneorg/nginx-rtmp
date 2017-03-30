@@ -42,10 +42,10 @@ systemctl enable nginx-rtmp
 ### Get logs
 ```bash
 # without follow
-docker logs nginx-rtmp
+docker logs nginx-rtmp.service
 
 # with follow
-docker logs -f nginx-rtmp
+docker logs -f nginx-rtmp.service
 
 # get logs for the systemd unit supervising the container
 journalctl -f -u nginx-rtmp
