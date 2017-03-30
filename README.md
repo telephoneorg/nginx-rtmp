@@ -19,8 +19,12 @@ In the /opt/nginx-rtmp/conf folder there will be two items:
 
 
 ### Configuration of your push servers
-* Edit `/opt/nginx-rtmp/conf/conf.d/rtmp.conf` and add your servers as such `push rtmp1.example.com:1934;` **don't forget the semicolon**
-* Reload nginx's config file: `systemctl restart nginx-rtmp.service` **This will just reload configuration file and not interrupt service.**
+* Edit `/opt/nginx-rtmp/conf/conf.d/rtmp.conf`: ex:
+```bash
+vim /opt/nginx-rtmp/conf/conf.d/rmtp.conf
+```
+* add your servers as such `push rtmp1.example.com:1934;` **don't forget the semicolon**
+* If server is already started (if not don't worry about this): reload nginx's config file: `systemctl reload nginx-rtmp.service` **This will just reload configuration file and not interrupt service.**
 
 
 ### Start the genlb.service:
@@ -49,7 +53,8 @@ journalctl -f -u nginx-rtmp
 
 ### Test
 ```bash
-[todo] unsure
+# This just tests that the port is open, check the status too and logs for errors
+nc -z localhost 1935 && echo 'WORKS!' || echo "DOESN'T WORK"
 ```
 
 ### Get status
@@ -57,9 +62,14 @@ journalctl -f -u nginx-rtmp
 systemctl status nginx-rtmp
 ```
 
+### Reload Changes to config Files without downtime
+```bash
+systemctl reload nginx-rtmp
+```
+
 ### Restart container
 ```bash
-systemctl stop nginx-rtmp && systemctl start nginx-rtmp
+systemctl restart nginx-rtmp
 ```
 
 ### Stop container
